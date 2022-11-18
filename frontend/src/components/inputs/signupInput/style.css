@@ -1,0 +1,25 @@
+.signup_input {
+  width: 100% !important;
+}
+.signup_input input {
+  background: var(--bg-secondary);
+}
+.signup_input .input_error {
+  max-width: 300px;
+}
+.signup_input .error_bottom {
+  transform: translateY(1px);
+}
+.error_right {
+  border-right: 10px solid #b94a48;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  position: absolute;
+  left: -10px;
+  top: 14px;
+}
+@media (min-width: 539px) {
+  .signup_input .input_error {
+    max-width: 100%;
+  }
+}

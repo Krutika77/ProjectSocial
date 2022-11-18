@@ -1,0 +1,21 @@
+.home_right {
+  position: fixed;
+  left: 80.7vw;
+  top: 4rem;
+  width: 17vw;
+}
+.splitter1 {
+  height: 1.3px;
+  background: var(--divider);
+  width: 17vw;
+  margin: 6px 2px 0 12px;
+}
+.project_header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 7px 10px;
+  font-weight: 600;
+  color: var(--color-secondary);
+}
