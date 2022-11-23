@@ -36,7 +36,6 @@ export default function Cover({ cover, visitor, photos }) {
       setShowCoverMenu(false);
       return;
     }
-
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (event) => {

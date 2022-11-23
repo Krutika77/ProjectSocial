@@ -10,28 +10,30 @@ export default function Bio({
   setShow,
 }) {
   return (
-    <div className="add_bio_wrap">
+    <div className="edit_bio_wrapper">
+      {/* input bio field */}
       <textarea
         placeholder={placeholder}
         name={name}
         value={infos?.[name]}
         maxLength={detail ? 25 : 100}
-        className="textarea_green details_input"
+        className="textarea_green form_input_details"
         onChange={handleChange}
       ></textarea>
-
-      {!detail && <div className="remaining">{max} characters remaining</div>}
+      {/* remaining characters out of the 200 characters limit */}
+      {!detail && <div className="char_left">{max} characters remaining</div>}
       <div className="flex">
         <div className="flex flex_left">
           <i className="public_icon"></i>Public
         </div>
-        <div className="flex flex_right">
+        <div className="flex">
           <button
             className="gray_btn"
             onClick={() => (!detail ? setShowBio(false) : setShow(false))}
           >
             Cancel
           </button>
+          {/* saves and updates the bio */}
           <button
             className="green_btn"
             onClick={() => {

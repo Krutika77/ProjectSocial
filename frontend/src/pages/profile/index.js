@@ -13,7 +13,7 @@ import GridPosts from "./GridPosts";
 import Post from "../../components/post";
 import Photos from "./Photos";
 import Friends from "./Friends";
-import Intro from "../../components/intro";
+import UserDetails from "../../components/userDetails";
 import { useMediaQuery } from "react-responsive";
 import CreatePostPopup from "../../components/createPostPopup";
 export default function Profile({ getAllPosts }) {
@@ -146,7 +146,7 @@ export default function Profile({ getAllPosts }) {
               }`}
             >
               <div className="profile_left" ref={leftSide}>
-                <Intro
+                <UserDetails
                   detailss={profile.details}
                   visitor={visitor}
                   setOthername={setOthername}

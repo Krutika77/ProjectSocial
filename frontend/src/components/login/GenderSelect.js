@@ -1,6 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 
-export default function GenderSelect({ handleRegisterChange, genderError }) {
+export default function GenderSelect({ handleSignupChange, genderError }) {
   // media breakpoints
   const min539 = useMediaQuery({
     query: "(min-width: 539px)",
@@ -25,7 +25,7 @@ export default function GenderSelect({ handleRegisterChange, genderError }) {
           name="gender"
           id="male"
           value="male"
-          onChange={handleRegisterChange}
+          onChange={handleSignupChange}
         />
       </label>
       <label htmlFor="female">
@@ -35,7 +35,7 @@ export default function GenderSelect({ handleRegisterChange, genderError }) {
           name="gender"
           id="female"
           value="female"
-          onChange={handleRegisterChange}
+          onChange={handleSignupChange}
         />
       </label>
       <label htmlFor="nonbinary">
@@ -45,7 +45,7 @@ export default function GenderSelect({ handleRegisterChange, genderError }) {
           name="gender"
           id="nonbinary"
           value="nonbinary"
-          onChange={handleRegisterChange}
+          onChange={handleSignupChange}
         />
       </label>
       {/* error for eg. none selected */}

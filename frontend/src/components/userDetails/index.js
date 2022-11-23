@@ -4,14 +4,18 @@ import "./style.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import EditDetails from "./EditDetails";
-export default function Intro({ detailss, visitor, setOthername }) {
+
+export default function UserDetails({ detailss, visitor, setOthername }) {
   const { user } = useSelector((state) => ({ ...state }));
   const [details, setDetails] = useState();
   const [visible, setVisible] = useState(false);
+
+  // populates details and infos whenever detailss change
   useEffect(() => {
     setDetails(detailss);
     setInfos(detailss);
   }, [detailss]);
+  // all fields are blanck by default
   const initial = {
     bio: details?.bio ? details.bio : "",
     otherName: details?.otherName ? details.otherName : "",
@@ -25,8 +29,9 @@ export default function Intro({ detailss, visitor, setOthername }) {
   };
   const [infos, setInfos] = useState(initial);
   const [showBio, setShowBio] = useState(false);
-  const [max, setMax] = useState(infos?.bio ? 100 - infos?.bio.length : 100);
-
+  // max length of Bio is 200 characters
+  const [max, setMax] = useState(infos?.bio ? 200 - infos?.bio.length : 200);
+  // update and store details in the backend
   const updateDetails = async () => {
     try {
       const { data } = await axios.put(
@@ -47,17 +52,21 @@ export default function Intro({ detailss, visitor, setOthername }) {
       console.log(error.response.data.message);
     }
   };
+  // fetches input and shown number of characters remaining for bio
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInfos({ ...infos, [name]: value });
-    setMax(100 - e.target.value.length);
+    setMax(200 - e.target.value.length);
   };
+
   return (
-    <div className="profile_card">
-      <div className="profile_card_header">Intro</div>
+    <div className="user_card">
+      <div className="user_card_header">Profile</div>
       {details?.bio && !showBio && (
-        <div className="info_col">
-          <span className="info_text">{details?.bio}</span>
+        <div className="details_column">
+          {/* display user bio */}
+          <span>{details?.bio}</span>
+          {/* if not a visitor, show edit bio button */}
           {!visitor && (
             <button
               className="gray_btn hover1"
@@ -68,14 +77,16 @@ export default function Intro({ detailss, visitor, setOthername }) {
           )}
         </div>
       )}
+      {/* if the user is not a visitor and there is no bio, add bio button is displayed */}
       {!details?.bio && !showBio && !visitor && (
         <button
-          className="gray_btn hover1 w100"
+          className="gray_btn hover1 btn_width"
           onClick={() => setShowBio(true)}
         >
           Add Bio
         </button>
       )}
+      {/* add bio input field */}
       {showBio && (
         <Bio
           infos={infos}
@@ -87,51 +98,52 @@ export default function Intro({ detailss, visitor, setOthername }) {
           name="bio"
         />
       )}
+      {/* displaying all available details */}
       {details?.job && details?.workplace ? (
-        <div className="info_profile">
+        <div className="edit_info">
           <img src="../../../icons/job.png" alt="" />
           works as {details?.job} at <b>{details?.workplace}</b>
         </div>
       ) : details?.job && !details?.workplace ? (
-        <div className="info_profile">
+        <div className="edit_info">
           <img src="../../../icons/job.png" alt="" />
           works as {details?.job}
         </div>
       ) : (
         details?.workplace &&
         !details?.job && (
-          <div className="info_profile">
+          <div className="edit_info">
             <img src="../../../icons/job.png" alt="" />
             works at {details?.workplace}
           </div>
         )
       )}
       {details?.college && (
-        <div className="info_profile">
+        <div className="edit_info">
           <img src="../../../icons/studies.png" alt="" />
           studied at {details?.college}
         </div>
       )}
       {details?.highSchool && (
-        <div className="info_profile">
+        <div className="edit_info">
           <img src="../../../icons/studies.png" alt="" />
           studied at {details?.highSchool}
         </div>
       )}
       {details?.currentCity && (
-        <div className="info_profile">
+        <div className="edit_info">
           <img src="../../../icons/home.png" alt="" />
           Lives in {details?.currentCity}
         </div>
       )}
       {details?.hometown && (
-        <div className="info_profile">
+        <div className="edit_info">
           <img src="../../../icons/home.png" alt="" />
           From {details?.hometown}
         </div>
       )}
       {details?.hometown && (
-        <div className="info_profile">
+        <div className="edit_info">
           <img src="../../../icons/instagram.png" alt="" />
           <a
             href={`https://www.instagram.com/${details?.instagram}`}
@@ -141,14 +153,16 @@ export default function Intro({ detailss, visitor, setOthername }) {
           </a>
         </div>
       )}
+      {/* edit button, if the user is not a visitor */}
       {!visitor && (
         <button
-          className="gray_btn hover1 w100"
+          className="gray_btn hover1 btn_width"
           onClick={() => setVisible(true)}
         >
           Edit Details
         </button>
       )}
+      {/* edit/add details popup */}
       {visible && !visitor && (
         <EditDetails
           details={details}
@@ -157,13 +171,6 @@ export default function Intro({ detailss, visitor, setOthername }) {
           infos={infos}
           setVisible={setVisible}
         />
-      )}
-
-      {!visitor && (
-        <button className="gray_btn hover1 w100">Add Hobbies</button>
-      )}
-      {!visitor && (
-        <button className="gray_btn hover1 w100">Add Featured</button>
       )}
     </div>
   );

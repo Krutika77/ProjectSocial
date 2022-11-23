@@ -235,14 +235,14 @@
 }
 /*--Menu-------*/
 /*-----profile card--------*/
-.profile_card {
+.user_card {
   background: var(--bg-primary);
   border-radius: 10px;
   box-shadow: 0 1px 2px var(--shadow-1);
   padding: 10px 15px;
   margin-top: 15px;
 }
-.profile_card_header {
+.user_card_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -259,10 +259,10 @@
 .profile_header_link:hover {
   background: var(--bg-secondary);
 }
-.profile_card_count {
+.user_card_count {
   color: var(--color-secondary);
 }
-.profile_card_grid {
+.user_card_grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;

@@ -10,8 +10,8 @@ export default function AllPhotos({
   useOnCLickOutside(modal, () => setAllPicsVisible(false));
   return (
     <div className="blur">
-      <div className="postBox infosBox" ref={modal}>
-        <div className="box_header">
+      <div className="post_box infos_box" ref={modal}>
+        <div className="post_box_header">
           <div
             className="small_circle"
             onClick={() => setAllPicsVisible(false)}
@@ -20,8 +20,8 @@ export default function AllPhotos({
           </div>
           <span>All Photos</span>
         </div>
-        <div className="details_wrapper scrollbar">
-          <div className="profile_card_grid">
+        <div className="edit_details_wrap scrollbar">
+          <div className="user_card_grid">
             {photos.resources &&
               photos.resources.slice(0, 9).map((img) => (
                 <div className="all_photo_card" key={img.public_id}>

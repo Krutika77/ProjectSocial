@@ -8,7 +8,7 @@ export default function ErrorPopup() {
   useClickOutside(errorPopup, () => {});
   return (
     <div className="blur" id="errorPopup">
-      <div className="postBox" ref={errorPopup} id="erroPost1">
+      <div className="post_box" ref={errorPopup} id="erroPost1">
         <div className="box_header">
           <div className="small_circle">
             <i className="exit_icon"></i>

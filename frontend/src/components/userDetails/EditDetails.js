@@ -8,23 +8,25 @@ export default function EditDetails({
   infos,
   setVisible,
 }) {
-  const modal = useRef(null);
-  useOnCLickOutside(modal, () => setVisible(false));
+  const detailsRef = useRef(null);
+  // hides the edit details popup when clicked outside
+  useOnCLickOutside(detailsRef, () => setVisible(false));
   return (
+    // hides the edit details popup when clicked outside
     <div className="blur">
-      <div className="postBox infosBox" ref={modal}>
-        <div className="box_header">
+      <div className="post_box infos_box" ref={detailsRef}>
+        <div className="post_box_header">
           <div className="small_circle" onClick={() => setVisible(false)}>
             <i className="exit_icon"></i>
           </div>
           <span>Edit Details</span>
         </div>
-        <div className="details_wrapper scrollbar">
-          <div className="details_col">
+        <div className="edit_details_wrap scrollbar">
+          <div className="edit_details_column">
             <span>Customize Your Intro</span>
             <span>Details you select will be public</span>
           </div>
-          <div className="details_header">Other Name</div>
+          <div className="edit_details_header">Other Name</div>
           <Detail
             value={details?.otherName}
             img="studies"
@@ -35,7 +37,7 @@ export default function EditDetails({
             updateDetails={updateDetails}
             infos={infos}
           />
-          <div className="details_header">Work</div>
+          <div className="edit_details_header">Work</div>
           <Detail
             value={details?.job}
             img="job"
@@ -56,7 +58,7 @@ export default function EditDetails({
             updateDetails={updateDetails}
             infos={infos}
           />
-          <div className="details_header">Education</div>
+          <div className="edit_details_header">Education</div>
           <Detail
             value={details?.highSchool}
             img="studies"
@@ -77,7 +79,7 @@ export default function EditDetails({
             updateDetails={updateDetails}
             infos={infos}
           />
-          <div className="details_header">Current City</div>
+          <div className="edit_details_header">Current City</div>
           <Detail
             value={details?.currentCity}
             img="home"
@@ -88,7 +90,7 @@ export default function EditDetails({
             updateDetails={updateDetails}
             infos={infos}
           />
-          <div className="details_header">Hometown</div>
+          <div className="edit_details_header">Hometown</div>
           <Detail
             value={details?.hometown}
             img="home"
@@ -99,7 +101,7 @@ export default function EditDetails({
             updateDetails={updateDetails}
             infos={infos}
           />
-          <div className="details_header">Instagram</div>
+          <div className="edit_details_header">Instagram</div>
           <Detail
             value={details?.instagram}
             img="home"

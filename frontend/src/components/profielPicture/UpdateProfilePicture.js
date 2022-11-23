@@ -105,8 +105,8 @@ export default function UpdateProfilePicture({
     }
   };
   return (
-    <div className="postBox update_img">
-      <div className="box_header">
+    <div className="post_box update_img">
+      <div className="post_box_header">
         <div className="small_circle" onClick={() => setImage("")}>
           <i className="exit_icon"></i>
         </div>

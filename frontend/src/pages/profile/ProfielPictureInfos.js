@@ -45,7 +45,7 @@ export default function ProfielPictureInfos({
           </div>
           <div className="profile_friend_count">
             {profile?.friends && (
-              <div className="profile_card_count">
+              <div className="user_card_count">
                 {profile?.friends.length === 0
                   ? ""
                   : profile?.friends.length === 1

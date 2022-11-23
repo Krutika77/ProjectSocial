@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 export default function Friends({ friends }) {
   return (
-    <div className="profile_card">
-      <div className="profile_card_header">
+    <div className="user_card">
+      <div className="user_card_header">
         Friends
         <Link to="/friends" className="profile_header_link">
           See all friends
         </Link>
       </div>
       {friends && (
-        <div className="profile_card_count">
+        <div className="user_card_count">
           {friends.length === 0
             ? ""
             : friends.length === 1
@@ -17,7 +17,7 @@ export default function Friends({ friends }) {
             : `${friends.length} Friends`}
         </div>
       )}
-      <div className="profile_card_grid">
+      <div className="user_card_grid">
         {friends &&
           friends.slice(0, 9).map((friend, i) => (
             <Link

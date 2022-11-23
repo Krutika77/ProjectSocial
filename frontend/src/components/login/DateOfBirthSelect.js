@@ -7,7 +7,7 @@ export default function DateOfBirthSelect({
   days,
   months,
   years,
-  handleRegisterChange,
+  handleSignupChange,
   dateError,
 }) {
   // screen breakpoints
@@ -27,21 +27,21 @@ export default function DateOfBirthSelect({
       style={{ marginBottom: `${dateError && !min1170 ? "90px" : "0"}` }}
     >
       {/* select birth date, month and year from drop-downs */}
-      <select name="bDay" value={bDay} onChange={handleRegisterChange}>
+      <select name="bDay" value={bDay} onChange={handleSignupChange}>
         {days.map((day, i) => (
           <option value={day} key={i}>
             {day}
           </option>
         ))}
       </select>
-      <select name="bMonth" value={bMonth} onChange={handleRegisterChange}>
+      <select name="bMonth" value={bMonth} onChange={handleSignupChange}>
         {months.map((month, i) => (
           <option value={month} key={i}>
             {month}
           </option>
         ))}
       </select>
-      <select name="bYear" value={bYear} onChange={handleRegisterChange}>
+      <select name="bYear" value={bYear} onChange={handleSignupChange}>
         {years.map((year, i) => (
           <option value={year} key={i}>
             {year}

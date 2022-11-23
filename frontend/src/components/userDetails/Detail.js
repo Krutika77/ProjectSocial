@@ -14,14 +14,16 @@ export default function Detail({
   const [show, setShow] = useState(false);
   return (
     <div>
-      <div className="add_details_flex " onClick={() => setShow(true)}>
+      <div className="add_detail " onClick={() => setShow(true)}>
         {value ? (
-          <div className="info_profile ">
+          // if the field had a previous value, edit info
+          <div className="edit_info ">
             <img src={`../../../icons/${img}.png`} alt="" />
             {value}
             <i className="edit_icon"></i>
           </div>
         ) : (
+          // else add info
           <>
             <i className="rounded_plus_icon"></i>
             <span className="underline">Add {text}</span>
