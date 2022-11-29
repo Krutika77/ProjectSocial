@@ -4,18 +4,21 @@ import { comment } from "../../functions/post";
 import { uploadImages } from "../../functions/uploadImages";
 import dataURItoBlob from "../../helpers/dataURItoBlob";
 import { ClipLoader } from "react-spinners";
+
 export default function CreateComment({ user, postId, setComments, setCount }) {
-  const [picker, setPicker] = useState(false);
+  const [emojiPicker, setEmojiPicker] = useState(false);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [commentImage, setCommentImage] = useState("");
   const [cursorPosition, setCursorPosition] = useState();
   const [loading, setLoading] = useState(false);
   const textRef = useRef(null);
-  const imgInput = useRef(null);
+  const inputImg = useRef(null);
+  // to keep track of the cursor position mainly when dealing with emojis
   useEffect(() => {
     textRef.current.selectionEnd = cursorPosition;
   }, [cursorPosition]);
+  // to add emojis in text
   const handleEmoji = (e, { emoji }) => {
     const ref = textRef.current;
     ref.focus();
@@ -25,8 +28,10 @@ export default function CreateComment({ user, postId, setComments, setCount }) {
     setText(newText);
     setCursorPosition(start.length + emoji.length);
   };
+  // to upload and process images
   const handleImage = (e) => {
     let file = e.target.files[0];
+    // checks if the selected file is of the correct type
     if (
       file.type !== "image/jpeg" &&
       file.type !== "image/png" &&
@@ -35,17 +40,18 @@ export default function CreateComment({ user, postId, setComments, setCount }) {
     ) {
       setError(`${file.name} format is not supported.`);
       return;
+      // checks if the file size is not too large
     } else if (file.size > 1024 * 1024 * 5) {
       setError(`${file.name} is too large max 5mb allowed.`);
       return;
     }
-
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (event) => {
       setCommentImage(event.target.result);
     };
   };
+  // to handle comments and images in comments
   const handleComment = async (e) => {
     if (e.key === "Enter") {
       if (commentImage != "") {
@@ -56,7 +62,6 @@ export default function CreateComment({ user, postId, setComments, setCount }) {
         formData.append("path", path);
         formData.append("file", img);
         const imgComment = await uploadImages(formData, path, user.token);
-
         const comments = await comment(
           postId,
           text,
@@ -70,7 +75,6 @@ export default function CreateComment({ user, postId, setComments, setCount }) {
         setCommentImage("");
       } else {
         setLoading(true);
-
         const comments = await comment(postId, text, "", user.token);
         setComments(comments);
         setCount((prev) => ++prev);
@@ -80,12 +84,13 @@ export default function CreateComment({ user, postId, setComments, setCount }) {
       }
     }
   };
+
   return (
-    <div className="create_comment_wrap">
-      <div className="create_comment">
+    <div className="comment_wrap">
+      <div className="post_comment">
         <img src={user?.picture} alt="" />
-        <div className="comment_input_wrap">
-          {picker && (
+        <div className="comment_field">
+          {emojiPicker && (
             <div className="comment_emojis">
               <Picker onEmojiClick={handleEmoji} />
             </div>
@@ -93,18 +98,19 @@ export default function CreateComment({ user, postId, setComments, setCount }) {
           <input
             type="file"
             hidden
-            ref={imgInput}
+            ref={inputImg}
             accept="image/jpeg,image/png,image/gif,image/webp"
             onChange={handleImage}
           />
           {error && (
-            <div className="postError comment_error">
-              <div className="postError_error">{error}</div>
+            <div className="post_error comment_error">
+              <div className="post_err">{error}</div>
               <button className="green_btn" onClick={() => setError("")}>
                 Try again
               </button>
             </div>
           )}
+          {/* comment input field */}
           <input
             type="text"
             ref={textRef}
@@ -113,33 +119,29 @@ export default function CreateComment({ user, postId, setComments, setCount }) {
             onChange={(e) => setText(e.target.value)}
             onKeyUp={handleComment}
           />
-          <div className="comment_circle" style={{ marginTop: "5px" }}>
+          {/* add emoji and add image icons */}
+          <div className="comment_icons" style={{ marginTop: "5px" }}>
             <ClipLoader size={20} color="#51ae84" loading={loading} />
           </div>
           <div
-            className="comment_circle_icon hover2"
+            className="comment_icon_pos hover2"
             onClick={() => {
-              setPicker((prev) => !prev);
+              setEmojiPicker((prev) => !prev);
             }}
           >
             <i className="emoji_icon"></i>
           </div>
           <div
-            className="comment_circle_icon hover2"
-            onClick={() => imgInput.current.click()}
+            className="comment_icon_pos hover2"
+            onClick={() => inputImg.current.click()}
           >
             <i className="camera_icon"></i>
           </div>
-          <div className="comment_circle_icon hover2">
-            <i className="gif_icon"></i>
-          </div>
-          <div className="comment_circle_icon hover2">
-            <i className="sticker_icon"></i>
-          </div>
         </div>
       </div>
+      {/* comment preview */}
       {commentImage && (
-        <div className="comment_img_preview">
+        <div className="preview_comment_img">
           <img src={commentImage} alt="" />
           <div
             className="small_white_circle"

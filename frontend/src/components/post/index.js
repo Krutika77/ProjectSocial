@@ -8,6 +8,7 @@ import CreateComment from "./CreateComment";
 import PostMenu from "./PostMenu";
 import { getReacts, reactPost } from "../../functions/post";
 import Comment from "./Comment";
+
 export default function Post({ post, user, profile }) {
   const [visible, setVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -17,13 +18,14 @@ export default function Post({ post, user, profile }) {
   const [count, setCount] = useState(1);
   const [checkSaved, setCheckSaved] = useState();
   const [comments, setComments] = useState([]);
+  // to get and update a post every time a user reacts or comments
   useEffect(() => {
     getPostReacts();
   }, [post]);
   useEffect(() => {
     setComments(post?.comments);
   }, [post]);
-
+  // gets all the reacts on the post with the count and kind of reaction
   const getPostReacts = async () => {
     const res = await getReacts(post._id, user.token);
     setReacts(res.reacts);
@@ -31,7 +33,7 @@ export default function Post({ post, user, profile }) {
     setTotal(res.total);
     setCheckSaved(res.checkSaved);
   };
-
+  // handling new reaction made by the user
   const reactHandler = async (type) => {
     reactPost(post._id, type, user.token);
     if (check == type) {
@@ -55,26 +57,30 @@ export default function Post({ post, user, profile }) {
       }
     }
   };
+  // show three comments at a time
   const showMore = () => {
     setCount((prev) => prev + 3);
   };
   const postRef = useRef(null);
+
   return (
     <div
       className="post"
       style={{ width: `${profile && "100%"}` }}
       ref={postRef}
     >
+      {/* post card header links to user's profile */}
       <div className="post_header">
         <Link
           to={`/profile/${post.user.username}`}
           className="post_header_left"
         >
           <img src={post.user.picture} alt="" />
-          <div className="header_col">
-            <div className="post_profile_name">
+          <div className="post_header_column">
+            <div className="post_user">
               {post.user.first_name} {post.user.last_name}
-              <div className="updated_p">
+              <div className="updated_profile_picture">
+                {/* if post is a profile picture update */}
                 {post.type == "profilePicture" &&
                   `updated ${
                     post.user.gender === "male"
@@ -83,6 +89,7 @@ export default function Post({ post, user, profile }) {
                       ? "her"
                       : "their"
                   } profile picture`}
+                {/* if post is for an updated cover picture */}
                 {post.type == "coverPicture" &&
                   `updated ${
                     post.user.gender === "male"
@@ -93,7 +100,8 @@ export default function Post({ post, user, profile }) {
                   } cover picture`}
               </div>
             </div>
-            <div className="post_profile_privacy_date">
+            <div className="post_date">
+              {/* displays how old is the post */}
               <Moment fromNow interval={30}>
                 {post.createdAt}
               </Moment>
@@ -101,6 +109,7 @@ export default function Post({ post, user, profile }) {
             </div>
           </div>
         </Link>
+        {/* post menu to save, download, report or delete post*/}
         <div
           className="post_header_right hover1"
           onClick={() => setShowMenu((prev) => !prev)}
@@ -108,61 +117,63 @@ export default function Post({ post, user, profile }) {
           <Dots color="#828387" />
         </div>
       </div>
+      {/* if it a post with a background img and text */}
       {post.background ? (
         <div
-          className="post_bg"
+          className="post_background"
           style={{ backgroundImage: `url(${post.background})` }}
         >
-          <div className="post_bg_text">{post.text}</div>
+          <div className="post_background_text">{post.text}</div>
         </div>
-      ) : post.type === null ? (
+      ) : // if the post has just text
+      post.type === null ? (
         <>
           <div className="post_text">{post.text}</div>
+          {/* post with images */}
           {post.images && post.images.length && (
+            // grid display for images in a single post
             <div
               className={
                 post.images.length === 1
-                  ? "grid_1"
+                  ? "img_grid_1"
                   : post.images.length === 2
-                  ? "grid_2"
+                  ? "img_grid_2"
                   : post.images.length === 3
-                  ? "grid_3"
+                  ? "img_grid_3"
                   : post.images.length === 4
-                  ? "grid_4"
-                  : post.images.length >= 5 && "grid_5"
+                  ? "img_grid_4"
+                  : post.images.length >= 5 && "img_grid_5"
               }
             >
               {post.images.slice(0, 5).map((image, i) => (
                 <img src={image.url} key={i} alt="" className={`img-${i}`} />
               ))}
               {post.images.length > 5 && (
-                <div className="more-pics-shadow">
+                <div className="multiple_imgs_shadow">
                   +{post.images.length - 5}
                 </div>
               )}
             </div>
           )}
         </>
-      ) : post.type === "profilePicture" ? (
-        <div className="post_profile_wrap">
-          <div className="post_updated_bg">
+      ) : // if the post is a new profile picture
+      post.type === "profilePicture" ? (
+        <div className="profile_pic_post">
+          <div className="updated_background">
             <img src={post.user.cover} alt="" />
           </div>
-          <img
-            src={post.images[0].url}
-            alt=""
-            className="post_updated_picture"
-          />
+          <img src={post.images[0].url} alt="" className="updated_image" />
         </div>
       ) : (
-        <div className="post_cover_wrap">
+        // if the post is an updated cover picture
+        <div className="post_cover">
           <img src={post.images[0].url} alt="" />
         </div>
       )}
-
-      <div className="post_infos">
+      {/* reacts received are displayed */}
+      <div className="post_hits">
         <div className="reacts_count">
-          <div className="reacts_count_imgs">
+          <div className="reacts_icons">
             {reacts &&
               reacts
                 .sort((a, b) => {
@@ -180,20 +191,22 @@ export default function Post({ post, user, profile }) {
                     )
                 )}
           </div>
-          <div className="reacts_count_num">{total > 0 && total}</div>
+          <div className="total_reacts">{total > 0 && total}</div>
         </div>
-        <div className="to_right">
+        {/* displays the number of comments made on a post */}
+        <div className="post_hits_right">
           <div className="comments_count">{comments.length} comments</div>
         </div>
       </div>
-      <div className="post_actions">
+      {/* react popup for hitting a new reaction on a post */}
+      <div className="post_reacts">
         <ReactsPopup
           visible={visible}
           setVisible={setVisible}
           reactHandler={reactHandler}
         />
         <div
-          className="post_action hover1"
+          className="post_react hover1"
           onMouseOver={() => {
             setTimeout(() => {
               setVisible(true);
@@ -206,6 +219,7 @@ export default function Post({ post, user, profile }) {
           }}
           onClick={() => reactHandler(check ? check : "like")}
         >
+          {/* check the reaction hit by the user and display accordingly */}
           {check ? (
             <img
               src={`../../../reacts/${check}.svg`}
@@ -241,13 +255,14 @@ export default function Post({ post, user, profile }) {
             {check ? check : "Like"}
           </span>
         </div>
-        <div className="post_action hover1">
+        {/* display previous comments newest first */}
+        <div className="post_react hover1">
           <i className="comment_icon"></i>
           <span>Comment</span>
         </div>
       </div>
-      <div className="comments_wrap">
-        <div className="comments_order"></div>
+      <div className="comments">
+        <div className="comments_display"></div>
         <CreateComment
           user={user}
           postId={post._id}
@@ -262,7 +277,7 @@ export default function Post({ post, user, profile }) {
             .slice(0, count)
             .map((comment, i) => <Comment comment={comment} key={i} />)}
         {count < comments.length && (
-          <div className="view_comments" onClick={() => showMore()}>
+          <div className="view_more_comments" onClick={() => showMore()}>
             View more comments
           </div>
         )}

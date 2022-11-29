@@ -1,4 +1,5 @@
-const reactsArray = [
+// array of all the reactions available
+const reacts = [
   {
     name: "like",
     image: "../../../reacts/likee.png",
@@ -28,9 +29,10 @@ const reactsArray = [
 export default function ReactsPopup({ visible, setVisible, reactHandler }) {
   return (
     <>
+      {/* all the reactions availabe are visible on hover */}
       {visible && (
         <div
-          className="reacts_popup"
+          className="reactions"
           onMouseOver={() => {
             setTimeout(() => {
               setVisible(true);
@@ -42,9 +44,9 @@ export default function ReactsPopup({ visible, setVisible, reactHandler }) {
             }, 500);
           }}
         >
-          {reactsArray.map((react, i) => (
+          {reacts.map((react, i) => (
             <div
-              className="react"
+              className="reaction"
               key={i}
               onClick={() => reactHandler(react.name)}
             >
