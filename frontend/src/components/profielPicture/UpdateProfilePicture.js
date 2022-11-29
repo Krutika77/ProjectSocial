@@ -7,6 +7,7 @@ import { updateprofilePicture } from "../../functions/user";
 import getCroppedImg from "../../helpers/getCroppedImg";
 import PulseLoader from "react-spinners/PulseLoader";
 import Cookies from "js-cookie";
+
 export default function UpdateProfilePicture({
   setImage,
   image,
@@ -22,6 +23,7 @@ export default function UpdateProfilePicture({
   const slider = useRef(null);
   const { user } = useSelector((state) => ({ ...state }));
   const [loading, setLoading] = useState(false);
+  // crop and adjust picture before posting
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
@@ -50,6 +52,7 @@ export default function UpdateProfilePicture({
     },
     [croppedAreaPixels]
   );
+  // update profile picture and create post for the new picture
   const updateProfielPicture = async () => {
     try {
       setLoading(true);
@@ -104,25 +107,27 @@ export default function UpdateProfilePicture({
       setError(error.response.data.message);
     }
   };
+
   return (
-    <div className="post_box update_img">
+    <div className="post_box update_picture">
       <div className="post_box_header">
         <div className="small_circle" onClick={() => setImage("")}>
           <i className="exit_icon"></i>
         </div>
         <span>Update profile picture</span>
       </div>
-      <div className="update_image_desc">
+      {/* textarea to add image description */}
+      <div className="image_description">
         <textarea
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="textarea_green details_input"
+          className="textarea_green"
         ></textarea>
       </div>
-
-      <div className="update_center">
-        <div className="crooper">
+      {/* image cropper */}
+      <div className="img_crop_preview">
+        <div className="cropper">
           <Cropper
             image={image}
             crop={crop}
@@ -135,6 +140,7 @@ export default function UpdateProfilePicture({
             showGrid={false}
           />
         </div>
+        {/* zoom in or out using slider */}
         <div className="slider">
           <div className="slider_circle hover1" onClick={() => zoomOut()}>
             <i className="minus_icon"></i>
@@ -153,19 +159,14 @@ export default function UpdateProfilePicture({
           </div>
         </div>
       </div>
-      <div className="flex_up">
+      {/* crop image as per current selection */}
+      <div className="btn_gap">
         <div className="gray_btn" onClick={() => getCroppedImage("show")}>
           <i className="crop_icon"></i>Crop photo
         </div>
-        <div className="gray_btn">
-          <i className="temp_icon"></i>Make Temporary
-        </div>
       </div>
-      <div className="flex_p_t">
-        <i className="public_icon"></i>
-        Your profile picture is public
-      </div>
-      <div className="update_submit_wrap">
+      {/* save or cancle profile picture update */}
+      <div className="submit_update">
         <div className="green_link" onClick={() => setImage("")}>
           Cancel
         </div>
