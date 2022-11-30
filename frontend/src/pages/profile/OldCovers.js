@@ -4,12 +4,13 @@ import useClickOutside from "../../helpers/clickOutside";
 
 export default function OldCovers({ photos, setCoverPicture, setShow }) {
   const { user } = useSelector((state) => ({ ...state }));
-  const Ref = useRef(null);
-  useClickOutside(Ref, () => setShow(false));
+  const oldCoverPicsRef = useRef(null);
+  // hides popup showing old picture options
+  useClickOutside(oldCoverPicsRef, () => setShow(false));
   return (
     <div className="blur">
-      <div className="post_box selectCoverBox" ref={Ref}>
-        <div className="box_header">
+      <div className="post_box infos_box" ref={oldCoverPicsRef}>
+        <div className="post_box_header">
           <div
             className="small_circle"
             onClick={() => {
@@ -20,12 +21,10 @@ export default function OldCovers({ photos, setCoverPicture, setShow }) {
           </div>
           <span>Select photo</span>
         </div>
-        <div className="selectCoverBox_links">
-          <div className="selectCoverBox_link">Recent Photos</div>
-          <div className="selectCoverBox_link">Photo Albums</div>
-        </div>
-        <div className="old_pictures_wrap scrollbar">
-          <div className="old_pictures">
+        {/* previous cover pictures */}
+        <div className="previous_pictures_wrap scrollbar">
+          <h4>Cover Pictures</h4>
+          <div className="previous_pictures">
             {photos &&
               photos
                 .filter(
@@ -43,7 +42,9 @@ export default function OldCovers({ photos, setCoverPicture, setShow }) {
                   />
                 ))}
           </div>
-          <div className="old_pictures">
+          {/* all previously uploaded pictures */}
+          <h4>All Pictures</h4>
+          <div className="previous_pictures">
             {photos &&
               photos
                 .filter((img) => img.folder !== `${user.username}/post_images`)

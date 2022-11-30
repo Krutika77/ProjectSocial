@@ -9,13 +9,13 @@ import Cover from "./Cover";
 import ProfielPictureInfos from "./ProfielPictureInfos";
 import ProfileMenu from "./ProfileMenu";
 import CreatePostSection from "../../components/createPostSection";
-import GridPosts from "./GridPosts";
 import Post from "../../components/post";
 import Photos from "./Photos";
 import Friends from "./Friends";
 import UserDetails from "../../components/userDetails";
 import { useMediaQuery } from "react-responsive";
 import CreatePostPopup from "../../components/createPostPopup";
+
 export default function Profile({ getAllPosts }) {
   const [visible, setVisible] = useState(false);
   const { username } = useParams();
@@ -35,13 +35,13 @@ export default function Profile({ getAllPosts }) {
   useEffect(() => {
     setOthername(profile?.details?.otherName);
   }, [profile]);
-
+  // to check weath it's active user's profile page or other's.
   var visitor = userName === user.username ? false : true;
   const [othername, setOthername] = useState();
   const path = `${userName}/*`;
   const max = 30;
   const sort = "desc";
-
+  // get the user data and posts to display in profile page
   const getProfile = async () => {
     try {
       dispatch({
@@ -84,6 +84,7 @@ export default function Profile({ getAllPosts }) {
       });
     }
   };
+  // left scroll freezes once it reaches the bottom while only right side can be scrolled
   const profileTop = useRef(null);
   const leftSide = useRef(null);
   const [height, setHeight] = useState();
@@ -103,8 +104,9 @@ export default function Profile({ getAllPosts }) {
   const getScroll = () => {
     setScrollHeight(window.pageYOffset);
   };
+
   return (
-    <div className="profile">
+    <div className="profile_page">
       {visible && (
         <CreatePostPopup
           user={user}
@@ -115,8 +117,8 @@ export default function Profile({ getAllPosts }) {
         />
       )}
       <Header page="profile" getAllPosts={getAllPosts} />
-      <div className="profile_top" ref={profileTop}>
-        <div className="profile_container">
+      <div className="profile_page_top" ref={profileTop}>
+        <div className="profile_bottom_wrap">
           <Cover
             cover={profile.cover}
             visitor={visitor}
@@ -129,12 +131,12 @@ export default function Profile({ getAllPosts }) {
             othername={othername}
             dispatch={dispatch}
           />
-          <ProfileMenu />
+          <ProfileMenu username={userName} token={user.token} photos={photos} />
         </div>
       </div>
-      <div className="profile_bottom">
-        <div className="profile_container">
-          <div className="bottom_container">
+      <div className="profile_page_bottom">
+        <div className="profile_bottom_wrap">
+          <div className="bottom_wrap">
             <div
               className={`profile_grid ${
                 check && scrollHeight >= height && leftHeight > 1000
@@ -145,7 +147,7 @@ export default function Profile({ getAllPosts }) {
                     "scrollFixed showMore"
               }`}
             >
-              <div className="profile_left" ref={leftSide}>
+              <div className="bottom_page_left" ref={leftSide}>
                 <UserDetails
                   detailss={profile.details}
                   visitor={visitor}
@@ -174,7 +176,7 @@ export default function Profile({ getAllPosts }) {
                   Meta © 2022
                 </div>
               </div>
-              <div className="profile_right">
+              <div className="bottom_page_right">
                 {!visitor && (
                   <CreatePostSection
                     user={user}
@@ -182,8 +184,7 @@ export default function Profile({ getAllPosts }) {
                     setVisible={setVisible}
                   />
                 )}
-                <GridPosts />
-                <div className="posts">
+                <div className="posts" style={{ marginTop: "20px" }}>
                   {profile.posts && profile.posts.length ? (
                     profile.posts.map((post) => (
                       <Post post={post} user={user} key={post._id} profile />

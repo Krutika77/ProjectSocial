@@ -10,16 +10,18 @@ import PulseLoader from "react-spinners/PulseLoader";
 import OldCovers from "./OldCovers";
 
 export default function Cover({ cover, visitor, photos }) {
-  const [showCoverMneu, setShowCoverMenu] = useState(false);
+  const [coverOptions, setCoverOptions] = useState(false);
   const [coverPicture, setCoverPicture] = useState("");
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
-  const menuRef = useRef(null);
-  const refInput = useRef(null);
-  const cRef = useRef(null);
-  useClickOutside(menuRef, () => setShowCoverMenu(false));
+  const coverOpRef = useRef(null);
+  const inputRef = useRef(null);
+  const coverPicRef = useRef(null);
+  //hides the "add cover photo" options when clicked outside
+  useClickOutside(coverOpRef, () => setCoverOptions(false));
   const [error, setError] = useState("");
+  // allows user to upload images with only compatible type and size
   const handleImage = (e) => {
     let file = e.target.files[0];
     if (
@@ -29,11 +31,11 @@ export default function Cover({ cover, visitor, photos }) {
       file.type !== "image/gif"
     ) {
       setError(`${file.name} format is not supported.`);
-      setShowCoverMenu(false);
+      setCoverOptions(false);
       return;
     } else if (file.size > 1024 * 1024 * 5) {
       setError(`${file.name} is too large max 5mb allowed.`);
-      setShowCoverMenu(false);
+      setCoverOptions(false);
       return;
     }
     const reader = new FileReader();
@@ -42,6 +44,7 @@ export default function Cover({ cover, visitor, photos }) {
       setCoverPicture(event.target.result);
     };
   };
+  // to crop, zoom and adjust the cover picture before posting
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
@@ -67,10 +70,11 @@ export default function Cover({ cover, visitor, photos }) {
   );
   const coverRef = useRef(null);
   const [width, setWidth] = useState();
+  // width is according to screen width
   useEffect(() => {
     setWidth(coverRef.current.clientWidth);
   }, [window.innerWidth]);
-
+  // uploads and changes cover picture
   const updateCoverPicture = async () => {
     try {
       setLoading(true);
@@ -82,6 +86,7 @@ export default function Cover({ cover, visitor, photos }) {
       formData.append("path", path);
       const res = await uploadImages(formData, path, user.token);
       const updated_picture = await updateCover(res[0].url, user.token);
+      // if the picture is uploaded, it creates a post for the same
       if (updated_picture === "ok") {
         const new_post = await createPost(
           "coverPicture",
@@ -91,18 +96,17 @@ export default function Cover({ cover, visitor, photos }) {
           user.id,
           user.token
         );
+        // changes the cover picture to the new one
         if (new_post === "ok") {
           setLoading(false);
           setCoverPicture("");
-          cRef.current.src = res[0].url;
+          coverPicRef.current.src = res[0].url;
         } else {
           setLoading(false);
-
           setError(new_post);
         }
       } else {
         setLoading(false);
-
         setError(updated_picture);
       }
     } catch (error) {
@@ -110,19 +114,19 @@ export default function Cover({ cover, visitor, photos }) {
       setError(error.response.data.message);
     }
   };
+
   return (
     <div className="profile_cover" ref={coverRef}>
+      {/* cover picture preview before saving */}
       {coverPicture && (
-        <div className="save_changes_cover">
-          <div className="save_changes_left">
+        // save cchanges for cover picture - header
+        <div className="save_cover">
+          <div className="changes_bar_left">
             <i className="public_icon"></i>
             Your cover photo is public
           </div>
-          <div className="save_changes_right">
-            <button
-              className="green_btn opacity_btn"
-              onClick={() => setCoverPicture("")}
-            >
+          <div className="changes_bar_right">
+            <button className="green_btn" onClick={() => setCoverPicture("")}>
               Cancel
             </button>
             <button className="green_btn " onClick={() => updateCoverPicture()}>
@@ -133,21 +137,22 @@ export default function Cover({ cover, visitor, photos }) {
       )}
       <input
         type="file"
-        ref={refInput}
+        ref={inputRef}
         hidden
         accept="image/jpeg,image/png,image/webp,image/gif"
         onChange={handleImage}
       />
       {error && (
-        <div className="postError comment_error cover_error">
-          <div className="postError_error">{error}</div>
+        <div className="post_error comment_error cover_error">
+          <div className="post_err">{error}</div>
           <button className="green_btn" onClick={() => setError("")}>
             Try again
           </button>
         </div>
       )}
+      {/* to crop and adjust the selected cover picture */}
       {coverPicture && (
-        <div className="cover_crooper">
+        <div className="img_cropper">
           <Cropper
             image={coverPicture}
             crop={crop}
@@ -162,37 +167,40 @@ export default function Cover({ cover, visitor, photos }) {
         </div>
       )}
       {cover && !coverPicture && (
-        <img src={cover} className="cover" alt="" ref={cRef} />
+        <img src={cover} className="cover_picture" alt="" ref={coverPicRef} />
       )}
+      {/* user can change cover picture for their own profile */}
       {!visitor && (
-        <div className="udpate_cover_wrapper">
+        <div className="cover_picture_update">
           <div
-            className="open_cover_update"
-            onClick={() => setShowCoverMenu((prev) => !prev)}
+            className="update_cover_btn"
+            onClick={() => setCoverOptions((prev) => !prev)}
           >
             <i className="camera_filled_icon"></i>
-            Add Cover Photo
+            New Cover Picture
           </div>
-          {showCoverMneu && (
-            <div className="open_cover_menu" ref={menuRef}>
+          {/* user can select from previously uploaded pictures or upload a new picture for cover*/}
+          {coverOptions && (
+            <div className="update_cover_options" ref={coverOpRef}>
               <div
-                className="open_cover_menu_item hover1"
+                className="update_cover_option hover1"
                 onClick={() => setShow(true)}
               >
                 <i className="photo_icon"></i>
-                Select Photo
+                Select Picture
               </div>
               <div
-                className="open_cover_menu_item hover1"
-                onClick={() => refInput.current.click()}
+                className="update_cover_option hover1"
+                onClick={() => inputRef.current.click()}
               >
                 <i className="upload_icon"></i>
-                Upload Photo
+                Upload Picture
               </div>
             </div>
           )}
         </div>
       )}
+      {/* displays old cover pictures */}
       {show && (
         <OldCovers
           photos={photos}

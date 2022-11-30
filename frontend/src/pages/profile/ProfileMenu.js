@@ -1,19 +1,39 @@
 import { Link } from "react-router-dom";
-import { Dots } from "../../svg";
+import { useState, useRef } from "react";
+import AllPhotos from "./allPhotos";
+import useOnCLickOutside from "../../helpers/clickOutside";
 
-export default function ProfileMenu() {
+export default function ProfileMenu({ username, token, photos }) {
+  const [allPhotosDisplay, setAllPhotosDisplay] = useState(false);
+  const popupRef = useRef(null);
+  // closes all pictures display popup when clicked outside
+  useOnCLickOutside(popupRef, () => setAllPhotosDisplay(false));
   return (
-    <div className="profile_menu_wrap">
+    <div className="profile_page_menu">
       <div className="profile_menu">
-        <Link to="/" className="profile_menu_active">
+        {/* takes user to the home page */}
+        <Link to="/" className="profile_menu_option menu_option_active">
           Posts
         </Link>
-        <Link to="/friends" className="hover1">
+        {/* takes user to their own friends page */}
+        <Link to="/friends" className="profile_menu_option hover1">
           Friends
         </Link>
-        <Link to="/" className="hover1">
+        {/* displays all picture of that user */}
+        <div
+          className="hover1 profile_menu_option"
+          onClick={() => setAllPhotosDisplay(true)}
+        >
           Photos
-        </Link>
+          {allPhotosDisplay && (
+            <AllPhotos
+              username={username}
+              token={token}
+              photos={photos}
+              setAllPhotosDisplay={setAllPhotosDisplay}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

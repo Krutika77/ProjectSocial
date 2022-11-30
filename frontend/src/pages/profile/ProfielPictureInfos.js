@@ -15,15 +15,21 @@ export default function ProfielPictureInfos({
   const [createVisible, setCreateVisible] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
   const [show, setShow] = useState(false);
-  const pRef = useRef(null);
+  const profileRef = useRef(null);
   return (
-    <div className="profile_img_wrap">
-      {show && <ProfilePicture setShow={setShow} pRef={pRef} photos={photos} />}
-      <div className="profile_w_left">
-        <div className="profile_w_img">
+    <div className="profile_picture">
+      {show && (
+        <ProfilePicture
+          setShow={setShow}
+          profileRef={profileRef}
+          photos={photos}
+        />
+      )}
+      <div className="profile_info_wrap">
+        <div className="change_profile_pic">
           <div
-            className="profile_w_bg"
-            ref={pRef}
+            className="profile_info_bg"
+            ref={profileRef}
             style={{
               backgroundSize: "cover",
               backgroundImage: `url(${profile.picture})`,
@@ -31,19 +37,19 @@ export default function ProfielPictureInfos({
           ></div>
           {!visitor && (
             <div
-              className="profile_circle hover1"
+              className="profile_picture_dis hover1"
               onClick={() => setShow(true)}
             >
               <i className="camera_filled_icon"></i>
             </div>
           )}
         </div>
-        <div className="profile_w_col">
+        <div className="profile_info">
           <div className="profile_name">
             {profile.first_name} {profile.last_name}
-            <div className="othername">{othername && `(${othername})`}</div>
+            <div className="other_name">{othername && `(${othername})`}</div>
           </div>
-          <div className="profile_friend_count">
+          <div className="total_friends">
             {profile?.friends && (
               <div className="user_card_count">
                 {profile?.friends.length === 0
@@ -54,7 +60,7 @@ export default function ProfielPictureInfos({
               </div>
             )}
           </div>
-          <div className="profile_friend_imgs">
+          <div className="user_friends_thumbnails">
             {profile?.friends &&
               profile.friends.slice(0, 6).map((friend, i) => (
                 <Link to={`/profile/${friend.username}`} key={i}>
