@@ -16,7 +16,7 @@ export default function Support({ setVisible }) {
       </div>
       <div>
         <a href="mailto:socialwelfare.seva@gmail.com">
-          <div className="settings_menu_options hover3">
+          <div className="menu_options hover3">
             <div className="small_circle">
               <i className="help_center_icon"></i>
             </div>
@@ -26,7 +26,7 @@ export default function Support({ setVisible }) {
       </div>
       <div>
         <a href="mailto:socialwelfare.seva@gmail.com">
-          <div className="settings_menu_options hover3">
+          <div className="menu_options hover3">
             <div className="small_circle">
               <i className="email_icon"></i>
             </div>
@@ -36,7 +36,7 @@ export default function Support({ setVisible }) {
       </div>
       <div>
         <a href="mailto:socialwelfare.seva@gmail.com">
-          <div className="settings_menu_options hover3">
+          <div className="menu_options hover3">
             <div className="small_circle">
               <i className="info_filled_icon"></i>
             </div>

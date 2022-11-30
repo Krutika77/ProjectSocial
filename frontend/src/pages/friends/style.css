@@ -1,11 +1,11 @@
-.friends {
+.friend_page {
   height: calc(100vh - 56px);
   width: 100%;
   margin-top: 56px;
   display: grid;
   color: var(--color-primary);
 }
-.friends_left {
+.friend_page_left {
   background: var(--bg-primary);
   box-shadow: 0 12px 12px var(--shadow-1);
   padding: 10px;
@@ -13,7 +13,7 @@
   width: 360px;
   height: 100%;
 }
-.friends_right {
+.friends_display {
   background: var(--bg-secondary);
   padding: 2rem;
   position: absolute;
@@ -23,46 +23,46 @@
   width: calc(100% - 360px);
   min-height: calc(100vh - 56px);
 }
-.friends_left_header {
+.page_menu_headers {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.friends_left_header h3 {
+.page_menu_headers h3 {
   font-size: 21px;
 }
-.friends_left .mmenu_item {
+.friend_page_left .menu_options {
   cursor: pointer;
 }
-.active_friends {
+.active_menu_option {
   background: var(--bg-secondary);
 }
-.active_friends .small_circle {
+.active_menu_option .small_circle {
   background: #51ae84;
 }
-.active_friends i {
+.active_menu_option i {
   filter: invert(100%);
 }
-.active_friends .rArrow {
+.active_menu_option .rArrow {
   display: none;
 }
-.see_link {
+.see_all {
   color: var(--green-color);
   padding: 5px;
   cursor: pointer;
 }
-.friends_right_wrap {
+.friends_display_wrap {
   padding-bottom: 10px;
   border-bottom: 1px solid var(--bg-third);
 }
-.friends_right_wrap .flex_wrap {
+.friends_display_wrap .display_section_wrap {
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 15px;
 }
-.req_card {
+.friend_request_card {
   background: var(--bg-primary);
   box-shadow: 1px 1px 1px var(--shadow-1);
   width: 210px;
@@ -75,41 +75,41 @@
   align-items: center;
   gap: 10px;
 }
-.req_card img {
+.friend_request_card img {
   width: 100%;
   height: 200px;
   object-fit: cover;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-.req_card button {
+.friend_request_card button {
   width: 170px !important;
 }
 @media (max-width: 870px) {
-  .friends_left {
+  .friend_page_left {
     width: 100px;
   }
-  .friends_right {
+  .friends_display {
     left: 100px;
     width: calc(100% - 100px);
   }
-  .friends_left .friends_left_header .small_circle {
+  .friend_page_left .page_menu_headers .small_circle {
     display: none;
   }
-  .friends_left .mmenu_item span {
+  .friend_page_left .menu_options span {
     display: none;
   }
 }
 @media (max-width: 400px) {
-  .friends_left_header h3 {
+  .page_menu_headers h3 {
     font-size: 16px;
   }
-  .see_link {
+  .see_all {
     font-size: 12px;
     width: 50px;
   }
 
-  .friends_right {
+  .friends_display {
     padding: 10px;
   }
 }

@@ -6,6 +6,7 @@ import { friendspage } from "../../functions/reducers";
 import { getFriendsPageInfos } from "../../functions/user";
 import Card from "./Card";
 import "./style.css";
+
 export default function Friends() {
   const { user } = useSelector((state) => ({ ...state }));
   const { type } = useParams();
@@ -15,6 +16,7 @@ export default function Friends() {
     data: {},
     error: "",
   });
+  // getting all the friends page data
   useEffect(() => {
     getData();
   }, []);
@@ -31,19 +33,17 @@ export default function Friends() {
   return (
     <>
       <Header page="friends" />
-      <div className="friends">
-        <div className="friends_left">
-          <div className="friends_left_header">
+      <div className="friend_page">
+        {/* left menu */}
+        <div className="friend_page_left">
+          <div className="page_menu_headers">
             <h3>Friends</h3>
-            <div className="small_circle">
-              <i className="settings_filled_icon"></i>
-            </div>
           </div>
-          <div className="friends_left_wrap">
+          <div className="page_menu_wrap">
             <Link
               to="/friends"
-              className={`mmenu_item hover3 ${
-                type === undefined && "active_friends"
+              className={`menu_options hover3 ${
+                type === undefined && "active_menu_option"
               }`}
             >
               <div className="small_circle">
@@ -56,8 +56,8 @@ export default function Friends() {
             </Link>
             <Link
               to="/friends/requests"
-              className={`mmenu_item hover3 ${
-                type === "requests" && "active_friends"
+              className={`menu_options hover3 ${
+                type === "requests" && "active_menu_option"
               }`}
             >
               <div className="small_circle">
@@ -70,8 +70,8 @@ export default function Friends() {
             </Link>
             <Link
               to="/friends/sent"
-              className={`mmenu_item hover3 ${
-                type === "sent" && "active_friends"
+              className={`menu_options hover3 ${
+                type === "sent" && "active_menu_option"
               }`}
             >
               <div className="small_circle">
@@ -84,8 +84,8 @@ export default function Friends() {
             </Link>
             <Link
               to="/friends/all"
-              className={`mmenu_item hover3 ${
-                type === "all" && "active_friends"
+              className={`menu_options hover3 ${
+                type === "all" && "active_menu_option"
               }`}
             >
               <div className="small_circle">
@@ -98,18 +98,20 @@ export default function Friends() {
             </Link>
           </div>
         </div>
-        <div className="friends_right">
+        {/* friends card display on the right */}
+        <div className="friends_display">
+          {/* display all pending requests received*/}
           {(type === undefined || type === "requests") && (
-            <div className="friends_right_wrap">
-              <div className="friends_left_header">
+            <div className="friends_display_wrap">
+              <div className="page_menu_headers">
                 <h3>Friend Requests</h3>
                 {type === undefined && (
-                  <Link to="/friends/requests" className="see_link hover3">
+                  <Link to="/friends/requests" className="see_all hover3">
                     See all
                   </Link>
                 )}
               </div>
-              <div className="flex_wrap">
+              <div className="display_section_wrap">
                 {data.requests &&
                   data.requests.map((user) => (
                     <Card
@@ -122,17 +124,18 @@ export default function Friends() {
               </div>
             </div>
           )}
+          {/* display all unanswered requests sent */}
           {(type === undefined || type === "sent") && (
-            <div className="friends_right_wrap">
-              <div className="friends_left_header">
+            <div className="friends_display_wrap">
+              <div className="page_menu_headers">
                 <h3>Sent Requests</h3>
                 {type === undefined && (
-                  <Link to="/friends/sent" className="see_link hover3">
+                  <Link to="/friends/sent" className="see_all hover3">
                     See all
                   </Link>
                 )}
               </div>
-              <div className="flex_wrap">
+              <div className="display_section_wrap">
                 {data.sentRequests &&
                   data.sentRequests.map((user) => (
                     <Card
@@ -145,17 +148,18 @@ export default function Friends() {
               </div>
             </div>
           )}
+          {/* displays all the present friends */}
           {(type === undefined || type === "all") && (
-            <div className="friends_right_wrap">
-              <div className="friends_left_header">
+            <div className="friends_display_wrap">
+              <div className="page_menu_headers">
                 <h3>Friends</h3>
                 {type === undefined && (
-                  <Link to="/friends/all" className="see_link hover3">
+                  <Link to="/friends/all" className="see_all hover3">
                     See all
                   </Link>
                 )}
               </div>
-              <div className="flex_wrap">
+              <div className="display_section_wrap">
                 {data.friends &&
                   data.friends.map((user) => (
                     <Card

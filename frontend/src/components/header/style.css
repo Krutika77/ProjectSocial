@@ -305,7 +305,7 @@ header {
   font-size: 12px !important;
   color: var(--color-secondary);
 }
-.settings_menu_options {
+.menu_options {
   position: relative;
   display: flex;
   align-items: center;
@@ -336,7 +336,7 @@ header {
   user-select: none;
   padding: 10px;
 }
-.menu_wrap .settings_menu_options {
+.menu_wrap .menu_options {
   margin-top: 0;
 }
 .menu_wrap_header {

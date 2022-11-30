@@ -52,7 +52,7 @@ export default function SettingsMenu({ user }) {
           <div className="settings_menu_splitter"></div>
           {/* settings and privacy (to reset password)*/}
           <div
-            className="settings_menu_options hover3"
+            className="menu_options hover3"
             onClick={() => {
               setVisible(1);
             }}
@@ -67,7 +67,7 @@ export default function SettingsMenu({ user }) {
           </div>
           {/* help & support (for help, feedback or reporting a post)*/}
           <div
-            className="settings_menu_options hover3"
+            className="menu_options hover3"
             onClick={() => {
               setVisible(2);
             }}
@@ -82,7 +82,7 @@ export default function SettingsMenu({ user }) {
           </div>
           {/* display (for dark and light mode) */}
           <div
-            className="settings_menu_options hover3"
+            className="menu_options hover3"
             onClick={() => {
               setVisible(3);
             }}
@@ -97,7 +97,7 @@ export default function SettingsMenu({ user }) {
           </div>
           {/* logout */}
           <div
-            className="settings_menu_options hover3"
+            className="menu_options hover3"
             onClick={() => {
               logout();
             }}
