@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import DisplayMode from "./DisplayMode";
 import Support from "./Support";
 import SettingsPrivacy from "./SettingsPrivacy";
 import { useDispatch } from "react-redux";
@@ -80,21 +79,6 @@ export default function SettingsMenu({ user }) {
               <i className="right_icon"></i>
             </div>
           </div>
-          {/* display (for dark and light mode) */}
-          <div
-            className="menu_options hover3"
-            onClick={() => {
-              setVisible(3);
-            }}
-          >
-            <div className="small_circle">
-              <i className="dark_filled_icon"></i>
-            </div>
-            <span>Display</span>
-            <div className="rArrow">
-              <i className="right_icon"></i>
-            </div>
-          </div>
           {/* logout */}
           <div
             className="menu_options hover3"
@@ -111,7 +95,6 @@ export default function SettingsMenu({ user }) {
       )}
       {visible === 1 && <SettingsPrivacy setVisible={setVisible} />}
       {visible === 2 && <Support setVisible={setVisible} />}
-      {visible === 3 && <DisplayMode setVisible={setVisible} />}
     </div>
   );
 }
